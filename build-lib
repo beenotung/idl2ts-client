@@ -8,6 +8,6 @@ fi
 ./gen-index
 yarn build
 ./rm-index
-mv index src/ || echo ''
+mv index src/ 2>/dev/null || echo ''
 node ./mk-package.js > dist/package.json
 echo "done build-lib."
