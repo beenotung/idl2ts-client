@@ -1,7 +1,7 @@
 {
   "name": "idl2ts-ng",
   "version": "1.0.0",
-  "description": "",
+  "description": "http library for typescript file generated from idl2ts",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist",
@@ -11,9 +11,13 @@
     "format": "tslint -p . --fix",
     "test": "run-s build lint"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "angular",
+    "http",
+    "idl2ts"
+  ],
+  "author": "Beeno Tung",
+  "license": "BSD-2-Clause",
   "dependencies": {
     "@angular/common": "^6.0.7"
   },
@@ -24,5 +28,13 @@
     "tslint": "^5.9.1",
     "tslint-eslint-rules": "^5.3.1",
     "typescript": "^2.9.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beenotung/idl2ts-ng.git"
+  },
+  "bugs": {
+    "url": "https://github.com/beenotung/idl2ts-ng/issues"
+  },
+  "homepage": "https://github.com/beenotung/idl2ts-ng#readme"
 }
