@@ -83,7 +83,7 @@ function resolvePath<Stub> (
 }
 
 interface HttpClient {
-  get (url: string, data: any): Observable<any>;
+  get (url: string, data?: any): Observable<any>;
 
   post (url: string, data: any): Observable<any>;
 }
@@ -102,7 +102,8 @@ export function passToStub<A> (
     switch (restCall.method) {
       case 'GET':
         // TODO replace url from data
-        return http.get(url, data);
+        Object.keys(data).forEach((x) => (url = url.replace(':' + x, data[x])));
+        return http.get(url);
       case 'POST':
         return http.post(url, data);
       default:
