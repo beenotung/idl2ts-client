@@ -1,0 +1,31 @@
+{
+  "name": "spec",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": "dist",
+  "scripts": {
+    "build": "run-s build:*",
+    "prebuild:idl": "find idl -name '*.ts' -delete && find idl -empty -delete && rm -rf src",
+    "build:idl": "cd idl && idl2ts ./hero_service.idl && cd .. && mkdir -p src && find idl -name '*.ts' -exec mv {} src/ \\;",
+    "postbuild:idl": "run-s format",
+    "prebuild:ts": "rm -rf dist && ./gen-index",
+    "build:ts": "tsc",
+    "postbuild:ts": "./rm-index",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "postformat": "tslint -p . --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Beeno Tung",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "idl2ts": "^0.3.3",
+    "npm-run-all": "^4.1.3",
+    "prettier": "^1.13.7",
+    "tslint": "^5.11.0",
+    "tslint-eslint-rules": "^5.3.1",
+    "typescript": "^2.9.2"
+  },
+  "description": ""
+}

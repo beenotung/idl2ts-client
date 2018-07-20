@@ -1,5 +1,5 @@
-import {HttpClient} from '@angular/common/http';
-import {getMethodNames} from './reflect';
+import { Observable } from 'rxjs/Observable';
+import { getMethodNames } from './reflect';
 
 let baseUrl: string;
 
@@ -11,7 +11,12 @@ export function setBaseUrl (s: string) {
 const stub_path = new Map<any, string>();
 const stub_methodName_restPath = new Map<any, Map<string, [string, string]>>();
 
-function set_map2<K1, K2, V> (mapMap: Map<K1, Map<K2, V>>, key1: K1, key2: K2, value: V) {
+function set_map2<K1, K2, V> (
+  mapMap: Map<K1, Map<K2, V>>,
+  key1: K1,
+  key2: K2,
+  value: V,
+) {
   if (!mapMap.has(key1)) {
     mapMap.set(key1, new Map<K2, V>());
   }
@@ -55,15 +60,20 @@ function get_methodName (o, method): string {
 }
 
 interface RestCall {
-  method: string,
-  path: string,
+  method: string;
+  path: string;
 }
 
-function resolvePath<Stub> (stub: Stub, methodName: string & keyof Stub): RestCall {
+function resolvePath<Stub> (
+  stub: Stub,
+  methodName: string & keyof Stub,
+): RestCall {
   const root = stub_path.get(stub.constructor);
   // console.debug({root, stub_method_restPath: stub_methodName_restPath, methodName});
   // debugger;
-  const [restMethod, path] = stub_methodName_restPath.get(stub.constructor.prototype).get(methodName);
+  const [restMethod, path] = stub_methodName_restPath
+    .get(stub.constructor.prototype)
+    .get(methodName);
   // console.debug({root, restMethod, path});
   // debugger;
   return {
@@ -72,7 +82,17 @@ function resolvePath<Stub> (stub: Stub, methodName: string & keyof Stub): RestCa
   };
 }
 
-export function passToStub (handler: { stub: any, http: HttpClient }, method, data): Promise<any> {
+interface HttpClient {
+  get (url: string, data: any): Observable<any>;
+
+  post (url: string, data: any): Observable<any>;
+}
+
+export function passToStub<A> (
+  handler: { stub: any; http: HttpClient },
+  method,
+  data,
+): Promise<A> {
   const stub = handler.stub;
   const http = handler.http;
   const methodName = get_methodName(handler, method);

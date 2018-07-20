@@ -10,4 +10,5 @@ yarn build
 ./rm-index
 mv index src/ 2>/dev/null || echo ''
 node ./mk-package.js > dist/package.json
+cp README.md dist/
 echo "done build-lib."

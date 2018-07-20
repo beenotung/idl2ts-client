@@ -1,0 +1,7 @@
+module hero_service {
+  // @Route('hero')
+  interface HeroHandler {
+    // @Get('/name')
+    string getName();
+  };
+};
