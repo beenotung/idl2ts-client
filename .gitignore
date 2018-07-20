@@ -1,8 +1,6 @@
 node_modules
+package-lock.json
 yarn-error.log
 yarn.lock
 dist
-node_modules
-yarn-error.log
-yarn.lock
 index.ts
