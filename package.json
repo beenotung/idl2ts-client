@@ -1,5 +1,5 @@
 {
-  "name": "idl2ts-ng",
+  "name": "idl2ts-client",
   "version": "1.2.0",
   "description": "http library for typescript file generated from idl2ts",
   "main": "dist/index.js",
