@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import axios from 'axios';
 import { getMethodNames } from './reflect';
 
 let baseUrl: string;
@@ -82,19 +82,12 @@ function resolvePath<Stub> (
   };
 }
 
-interface HttpClient {
-  get (url: string, data?: any): Observable<any>;
-
-  post (url: string, data: any): Observable<any>;
-}
-
 export function passToStub<A> (
-  handler: { stub: any; http: HttpClient },
+  handler: { stub: any },
   method,
   data,
 ): Promise<A> {
   const stub = handler.stub;
-  const http = handler.http;
   const methodName = get_methodName(handler, method);
   const restCall = resolvePath(stub, methodName);
 
@@ -103,15 +96,14 @@ export function passToStub<A> (
       case 'GET':
         // TODO replace url from data
         Object.keys(data).forEach((x) => (url = url.replace(':' + x, data[x])));
-        return http.get(url);
+        return axios.get<A>(url);
       case 'POST':
-        return http.post(url, data);
+        return axios.post<A>(url, data);
       default:
         throw new Error('unsupported rest method: ' + restCall.method);
     }
   }
 
-  const res = call(`${baseUrl}/${restCall.path}`);
   // TODO unwrap the (http) response into (payload) data
-  return res.toPromise();
+  return call(`${baseUrl}/${restCall.path}`).then((res) => res.data);
 }
