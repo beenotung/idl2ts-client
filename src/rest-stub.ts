@@ -104,6 +104,8 @@ export function passToStub<A> (
     }
   }
 
-  // TODO unwrap the (http) response into (payload) data
+  if (baseUrl === undefined || baseUrl === null) {
+    throw new Error('baseUrl is not configured');
+  }
   return call(`${baseUrl}/${restCall.path}`).then((res) => res.data);
 }
