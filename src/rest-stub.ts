@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { getMethodNames } from './reflect';
 
 let baseUrl: string;
@@ -82,10 +82,15 @@ function resolvePath<Stub> (
   };
 }
 
+/**
+ * the response will be parse as json be default,
+ * for expected empty response, pass options of `{responseType: 'text/plain'}`
+ * */
 export function passToStub<A> (
   handler: { stub: any },
   method,
   data,
+  options?: AxiosRequestConfig,
 ): Promise<A> {
   const stub = handler.stub;
   const methodName = get_methodName(handler, method);
@@ -96,9 +101,9 @@ export function passToStub<A> (
       case 'GET':
         // TODO replace url from data
         Object.keys(data).forEach((x) => (url = url.replace(':' + x, data[x])));
-        return axios.get<A>(url);
+        return axios.get<A>(url, options);
       case 'POST':
-        return axios.post<A>(url, data);
+        return axios.post<A>(url, data, options);
       default:
         throw new Error('unsupported rest method: ' + restCall.method);
     }
