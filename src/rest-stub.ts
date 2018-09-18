@@ -104,6 +104,7 @@ export function passToStub<A> (
     Object.keys(data).forEach((x) => (url = url.replace(':' + x, data[x])));
   }
   options = options || {};
+  options.method = options.method || restMethod;
   options.url = options.url || url;
   options.data = options.data || data;
   return axios.request(options).then((res) => res.data);
