@@ -4,7 +4,6 @@
   "description": "http library for typescript file generated from idl2ts",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": "dist",
   "scripts": {
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
