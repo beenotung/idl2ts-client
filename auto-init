@@ -2,6 +2,5 @@
 set -e
 
 if [ ! -d node_modules ]; then
-  hash yarn 2>/dev/null || npm i -g yarn
-  yarn --offline || yarn
+  npm i
 fi
