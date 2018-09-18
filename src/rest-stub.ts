@@ -92,25 +92,19 @@ export function passToStub<A> (
   data,
   options?: AxiosRequestConfig,
 ): Promise<A> {
-  const stub = handler.stub;
-  const methodName = get_methodName(handler, method);
-  const restCall = resolvePath(stub, methodName);
-
-  function call (url) {
-    switch (restCall.method) {
-      case 'GET':
-        // TODO replace url from data
-        Object.keys(data).forEach((x) => (url = url.replace(':' + x, data[x])));
-        return axios.get<A>(url, options);
-      case 'POST':
-        return axios.post<A>(url, data, options);
-      default:
-        throw new Error('unsupported rest method: ' + restCall.method);
-    }
-  }
-
   if (baseUrl === undefined || baseUrl === null) {
     throw new Error('baseUrl is not configured');
   }
-  return call(`${baseUrl}/${restCall.path}`).then((res) => res.data);
+  const stub = handler.stub;
+  const methodName = get_methodName(handler, method);
+  const restCall = resolvePath(stub, methodName);
+  let url = `${baseUrl}/${restCall.path}`;
+  const restMethod = restCall.method.toLowerCase();
+  if (restMethod === 'get') {
+    Object.keys(data).forEach((x) => (url = url.replace(':' + x, data[x])));
+  }
+  options = options || {};
+  options.url = options.url || url;
+  options.data = options.data || data;
+  return axios.request(options).then((res) => res.data);
 }
