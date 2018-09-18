@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
-    "build": "tsc -p .",
+    "build": "gen-index && tsc -p .",
     "lint": "tslint -p .",
     "format": "prettier --write \"src/**/*.ts\"",
     "postformat": "tslint -p . --fix",
@@ -21,6 +21,7 @@
   "license": "BSD-2-Clause",
   "peerDependencies": {},
   "devDependencies": {
+    "@beenotung/gen-index": "^1.0.3",
     "@types/axios": "^0.14.0",
     "@types/node": "^10.5.1",
     "npm-run-all": "^4.1.3",
